@@ -1,0 +1,31 @@
+#!/bin/sh
+
+#  CleanXcode.sh
+#  Pods
+#
+#  Created by Marek Kojder on 04.10.2019.
+#
+
+default="\x1B[0;39m"
+red="\x1B[0;31m"
+green="\x1B[0;32m"
+yellow="\x1B[0;33m"
+endColor="\x1B[0m"
+
+inkscape="/Applications/Inkscape.app/Contents/Resources/bin/Inkscape"
+if [ -f $inkscape ]; then
+	echo "${green}Converting:${endColor}"
+else 
+    echo "${red}Note: This script requres Inkscape app!${red}"
+    exit 1
+fi
+
+path=$(pwd)
+for i in *.svg; do
+    [ -f "$i" ] || break
+    filename="${i%%.*}"
+    echo "${yellow}${i} ${default}-> ${green}${filename}.pdf${endColor}"
+    $inkscape "${path}/${i}" -A="${path}/${filename}.pdf" --without-gui
+done
+
+echo "${green}Finished!${endColor}"
